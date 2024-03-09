@@ -8,7 +8,7 @@ The DECODE OpenCloud project is composed of multiple repositories:
 
 DECODE Cloud runs software in Docker containers with a compatible structure. Currently, it supports:
  - [DECODE](https://github.com/ries-lab/DECODE_Internal/tree/dockerfile_stable): SMLM.
- - [Comet](https://github.com/nolan1999/Comet/tree/docker): drift correction.
+ - [Comet](https://github.com/ries-lab/Comet): drift correction.
 
 For development, the following repositories are additionally used:
  - [IntegrationTests](https://github.com/ries-lab/DECODE_Cloud_IntegrationTests): integration tests.
