@@ -18,3 +18,14 @@ Confirmation of new users and workers is controlled by requiring their membershi
 As long as this is not the case, their access to the APIs is blocked.
 When a new user registers using the ![user frontend](https://github.com/ries-lab/DECODE_Cloud_UserFrontend), an email is sent to the administrator email using a ![Cognito post-creation trigger](https://github.com/ries-lab/DECODE_AWS_Infrastructure/tree/main/stack/apis/runtime/cognito_post_creation_trigger).
 The administrator can see the request details on the AWS CLI and accept the request by adding the Cognito users to the appropriate groups.
+
+
+## Requirements
+#### User
+Nothing apart from internet connection, web browser, email address.
+
+#### Worker
+ - Docker client
+ - Internet connection, email address
+ - ![nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) to run GPU jobs
+ - ![DECODE OpenCloud job fetcher](https://github.com/ries-lab/DECODE_Cloud_JobFetcher)
