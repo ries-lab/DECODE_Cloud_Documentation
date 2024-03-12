@@ -9,5 +9,5 @@ Centralized documentation for DECODE OpenCloud.
 2. Guides
    1. [Applications.md](./2_guides/2_1_Applications.md): supported applications, how to publish a new application.
    2. [Users.md](./2_guides/2_2_Users.md): users and workers management.
-   3. [Testing.md](./2_guides/2_2_Testing.md): how to test.
+   3. [Testing.md](./2_guides/2_3_Testing.md): how to test.
    4. [Debugging.md](./2_guides/2_4_Debugging.md): solutions to possible problems.
