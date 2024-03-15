@@ -17,7 +17,7 @@ Post a new user:
 ```  
 On the AWS console, verify this new user.  
 Post a token and authenticate.  
-Post an example parameter file and an example bead calibration (see for example the files in the ![DECODE tutorial](https://colab.research.google.com/drive/1uQ7w1zaqpy9EIjUdaLyte99FJIhJ6N8E?usp=sharing)).
+Post an example parameter file and an example bead calibration (see for example the files in the [DECODE tutorial](https://colab.research.google.com/drive/1uQ7w1zaqpy9EIjUdaLyte99FJIhJ6N8E?usp=sharing)).
 In the example below, they are posted under `test/param.yaml` and `test/calib.mat`.  
 Post a job:  
 ```
