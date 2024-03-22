@@ -11,3 +11,7 @@ Check the following:
 
 #### Frontend not changing after update
 You need to refresh the page, and possibly clear the browser history before reloading.
+
+#### After re-deploying, cloud jobs fail
+Check whether the problem is with mounting EFS.
+If a new filesystem is created, you need to de-register all old AWS Batch job definitions, since they still try to mount the old filesystem.
