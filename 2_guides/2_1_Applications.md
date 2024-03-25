@@ -1,5 +1,6 @@
 # Supported applications
  - [DECODE](https://github.com/ries-lab/DECODE_Internal/tree/dockerfile_stable): SMLM.
+ - [DECODE Plex](https://github.com/ries-lab/DECODE_Internal/tree/future/dockerfile): SMLM.
  - [Comet](https://github.com/ries-lab/Comet): drift correction.
 
 # Publishing a new application
