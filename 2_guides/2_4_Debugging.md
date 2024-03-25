@@ -15,3 +15,10 @@ You need to refresh the page, and possibly clear the browser history before relo
 #### After re-deploying, cloud jobs fail
 Check whether the problem is with mounting EFS.
 If a new filesystem is created, you need to de-register all old AWS Batch job definitions, since they still try to mount the old filesystem.
+
+#### Cloud job stuck on pre- or post-processing
+The lambdas might be failing. 
+To debug:
+ - Test the lambda functions manually.
+ - Add the BasicExecutionRole to have them log to CloudWatch, then look at the logs.
+ - In particular, the lambdas might have too little memory.
