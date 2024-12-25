@@ -1,0 +1,14 @@
+site_name: DECODE OpenCloud Docs
+nav:
+  - Home: index.md
+  - Architecture:
+    - Repositories: architecture/repositories.md
+    - Job workflow: architecture/workflow.md
+    - Design choices: architecture/design.md
+  - Developer guide:
+    - Applications: developer/applications.md
+    - Users: developer/users.md
+    - Testing: developer/testing.md
+    - Debugging: developer/debugging.md
+    - Domains: developer/domains.md
+

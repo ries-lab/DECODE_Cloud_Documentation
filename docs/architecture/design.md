@@ -1,4 +1,6 @@
-A couple of design choices, explained.
+# Design choices
+
+---
 
 ## Architecture
 #### Pulling architecture of jobs
@@ -10,6 +12,8 @@ Workers can pull jobs only whenever they have free resources, and do not get con
 #### Database as a queue
 Allows filtering by more criteria, including prioritization, resource matching, and so on.
 We will not have so many jobs that performance could significantly suffer.
+
+---
 
 ## Technical implementation
 #### Different job IDs in the user-facing and worker-facing APIs
@@ -35,3 +39,5 @@ Instead, the client directly connects to S3.
 #### Keep-alive signals
 These are implemented to notice silent failures of workers.
 A daemon on the worker-facing API periodically checks and requeues jobs that have not received status updates for a while.
+
+---
