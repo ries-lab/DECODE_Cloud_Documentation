@@ -6,11 +6,11 @@
 
 The currently(*) supported applications are:
 
- - [DECODE](https://github.com/ries-lab/DECODE_Internal/tree/dockerfile_stable): SMLM.
- - [DECODE Plex](https://github.com/ries-lab/DECODE_Internal/tree/future/dockerfile): SMLM.
- - [Comet](https://github.com/ries-lab/Comet): drift correction.
+ - [DECODE](https://github.com/ries-lab/DECODE_Internal/tree/dockerfile_stable): single-molecule localization microscopy
+ - [DECODE Plex](https://github.com/ries-lab/DECODE_Internal/tree/future/dockerfile): multi-channel single-molecule localization microscopy
+ - [Comet](https://github.com/ries-lab/Comet): drift correction
 
-(*) Please note that the ultimate source of truth for this is the user-facing API.
+(*) Please note that the ultimate source of truth for this is [the `/jobs/applications/` endpoint of the user-facing API](https://prod.api.decode.arthur-jaques.de/docs#/Jobs/list_applications_jobs_applications_get).
 
 ---
 

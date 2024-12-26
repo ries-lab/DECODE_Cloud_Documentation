@@ -8,7 +8,7 @@ nav:
   - Developer guide:
     - Applications: developer/applications.md
     - Users: developer/users.md
+    - Developing: developer/developing.md
     - Testing: developer/testing.md
     - Debugging: developer/debugging.md
-    - Domains: developer/domains.md
 
