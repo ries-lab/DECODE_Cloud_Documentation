@@ -153,6 +153,97 @@ On the background, docker images are tested and spin up with <code>docker-compos
 <h2 id="unit-tests">Unit tests</h2>
 <p>See the respective repositories.
 They are mostly required on PRs.</p>
+<p>Repository integration tests (and sometimes even unit tests) require a testing AWS account and a user with some permissions on testing S3 buckets/RDS instances.
+We store credentials for them in GH's organization secrets, so that they are common across repositories.
+However, those tests mostly needed to be ran once manually with a role with more permissions, since we do not want to give GH actions the permission to e.g. create RDS instances (this is also mentioned in the repositories affected).
+Currently, the permissions given to the GH runner testing user are (might not be up-to-date):</p>
+<pre><code>// DecodeCloudTestsEC2Ingress
+{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;ec2:RevokeSecurityGroupIngress&quot;,
+                &quot;ec2:AuthorizeSecurityGroupIngress&quot;
+            ],
+            &quot;Resource&quot;: &quot;arn:aws:ec2:eu-central-1:&lt;aws-account-id&gt;:security-group/&lt;sg-id&gt;&quot;
+        }
+    ]
+}
+// DecodeCloudTestsRDS
+{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;rds:DescribeDBInstances&quot;,
+            &quot;Resource&quot;: [
+                &quot;arn:aws:rds:*:&lt;aws-account-id&gt;:db:decodecloudintegrationtests&quot;,
+                &quot;arn:aws:rds:*:&lt;aws-account-id&gt;:db:decodecloudqueuetests&quot;,
+                &quot;arn:aws:rds:eu-central-1:&lt;aws-account-id&gt;:db:decodecloudintegrationtestsuserapi&quot;
+            ]
+        }
+    ]
+}
+// DecodeCloudTestsS3Buckets
+{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor1&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;s3:*&quot;,
+            &quot;Resource&quot;: [
+                &quot;arn:aws:s3:::decode-cloud-integration-tests&quot;,
+                &quot;arn:aws:s3:::decode-cloud-integration-tests/*&quot;,
+                &quot;arn:aws:s3:::decode-cloud-filesystem-tests&quot;,
+                &quot;arn:aws:s3:::decode-cloud-filesystem-tests/*&quot;,
+                &quot;arn:aws:s3:::decode-cloud-user-integration-tests&quot;,
+                &quot;arn:aws:s3:::decode-cloud-user-integration-tests/*&quot;,
+                &quot;arn:aws:s3:::decode-cloud-user-filesystem-tests&quot;,
+                &quot;arn:aws:s3:::decode-cloud-user-filesystem-tests/*&quot;
+            ]
+        }
+    ]
+}
+// DecodeCloudTestsSecrets
+{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;secretsmanager:GetSecretValue&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:secretsmanager:eu-central-1:&lt;aws-account-id&gt;:secret:decode-cloud-tests-db-pwd*&quot;
+        }
+    ]
+}
+// SQSTestingDecodeCloud
+{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;sqs:ListQueues&quot;,
+            &quot;Resource&quot;: &quot;*&quot;
+        },
+        {
+            &quot;Sid&quot;: &quot;VisualEditor1&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;sqs:*&quot;,
+            &quot;Resource&quot;: [
+                &quot;arn:aws:sqs:*:&lt;aws-account-id&gt;:cloud_queue.fifo&quot;,
+                &quot;arn:aws:sqs:*:&lt;aws-account-id&gt;:local_queue.fifo&quot;,
+                &quot;arn:aws:sqs:*:&lt;aws-account-id&gt;:None_queue.fifo&quot;
+            ]
+        }
+    ]
+}
+</code></pre>
 <hr />
 <h2 id="manual-tests">Manual tests</h2>
 <h5 id="testing-user-workflow-without-the-frontend">Testing user workflow without the frontend</h5>
