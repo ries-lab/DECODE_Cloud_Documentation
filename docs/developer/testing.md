@@ -24,6 +24,99 @@ Currently, the [`Run tests`](https://github.com/ries-lab/DECODE_Cloud_Integratio
 See the respective repositories.
 They are mostly required on PRs.
 
+Repository integration tests (and sometimes even unit tests) require a testing AWS account and a user with some permissions on testing S3 buckets/RDS instances.
+We store credentials for them in GH's organization secrets, so that they are common across repositories.
+However, those tests mostly needed to be ran once manually with a role with more permissions, since we do not want to give GH actions the permission to e.g. create RDS instances (this is also mentioned in the repositories affected).
+Currently, the permissions given to the GH runner testing user are (might not be up-to-date):
+```
+// DecodeCloudTestsEC2Ingress
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RevokeSecurityGroupIngress",
+                "ec2:AuthorizeSecurityGroupIngress"
+            ],
+            "Resource": "arn:aws:ec2:eu-central-1:<aws-account-id>:security-group/<sg-id>"
+        }
+    ]
+}
+// DecodeCloudTestsRDS
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "rds:DescribeDBInstances",
+            "Resource": [
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtests",
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudqueuetests",
+                "arn:aws:rds:eu-central-1:<aws-account-id>:db:decodecloudintegrationtestsuserapi"
+            ]
+        }
+    ]
+}
+// DecodeCloudTestsS3Buckets
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::decode-cloud-integration-tests",
+                "arn:aws:s3:::decode-cloud-integration-tests/*",
+                "arn:aws:s3:::decode-cloud-filesystem-tests",
+                "arn:aws:s3:::decode-cloud-filesystem-tests/*",
+                "arn:aws:s3:::decode-cloud-user-integration-tests",
+                "arn:aws:s3:::decode-cloud-user-integration-tests/*",
+                "arn:aws:s3:::decode-cloud-user-filesystem-tests",
+                "arn:aws:s3:::decode-cloud-user-filesystem-tests/*"
+            ]
+        }
+    ]
+}
+// DecodeCloudTestsSecrets
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "arn:aws:secretsmanager:eu-central-1:<aws-account-id>:secret:decode-cloud-tests-db-pwd*"
+        }
+    ]
+}
+// SQSTestingDecodeCloud
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sqs:ListQueues",
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "sqs:*",
+            "Resource": [
+                "arn:aws:sqs:*:<aws-account-id>:cloud_queue.fifo",
+                "arn:aws:sqs:*:<aws-account-id>:local_queue.fifo",
+                "arn:aws:sqs:*:<aws-account-id>:None_queue.fifo"
+            ]
+        }
+    ]
+}
+```
+
 ---
 
 ## Manual tests
