@@ -129,6 +129,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-bs-level="2"><a href="#releases-and-deployment" class="nav-link">Releases and deployment</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -139,12 +143,11 @@
 <h1 id="developing">Developing</h1>
 <hr />
 <h2 id="environments">Environments</h2>
-<p><strong>This is WIP (i.e., not yet implemented).</strong></p>
-<p>We would like to have a <strong>production</strong> (prod) and a <strong>development</strong> (dev) environment.</p>
+<p>We have a <strong>production</strong> (prod) and a <strong>development</strong> (dev) environment.</p>
 <ul>
 <li>Each environment has its own APIs and AWS stack.</li>
-<li>The application images, as they are not part of the stack itself, are common to both environments.</li>
-<li>The prod stack follows the <code>prod</code> branch in each repository, the dev stack follows the <code>main</code> branch in each repository.</li>
+<li>The application images, as they are not part of the stack itself, are common to both environments. However, the batch job definitions are separate.</li>
+<li>[not yet implemented] The prod stack follows the <code>prod</code> branch in each repository, the dev stack follows the <code>main</code> branch in each repository.</li>
 <li>The prod stack is always deployed, the dev stack can be deleted to save resources when not required.</li>
 </ul>
 <hr />
@@ -154,7 +157,7 @@ In particular, we use <a href="https://python-poetry.org/"><code>poetry</code></
 Additionally, we use the scripts functionality of poetry to more easily build/run/delete/cleanup docker images and serve the APIs.</p>
 <hr />
 <h2 id="code-checks">Code checks</h2>
-<p>Ideally, all repositories will use two required checks on PRs:</p>
+<p>All repositories use two required checks on PRs:</p>
 <ul>
 <li>Static code checks<ul>
 <li><code>ruff</code> and <code>ruff format</code></li>
@@ -163,16 +166,31 @@ Additionally, we use the scripts functionality of poetry to more easily build/ru
 </li>
 <li>Tests using <code>pytest</code></li>
 </ul>
-<p>Some tests require AWS credentials for a test user with the required permissions.
+<p>Some tests require AWS credentials for a test user with the required permissions to test resources.
 For this, we use secrets in the GitHub repositories.</p>
-<!--- TODO: Describe required permissions. -->
-
-<p>The checks can also be ran automatically:</p>
+<p>The checks can also be ran manually:</p>
 <ul>
 <li><code>pre-commit install</code> to automatically run the static code checks on commit</li>
 <li><code>pytest tests/ [-m "aws or not(aws)"]</code> to automatically run the tests (the <code>aws</code> marker tags tests that require AWS credentials)</li>
 </ul>
-<hr /></div>
+<hr />
+<h2 id="releases-and-deployment">Releases and deployment</h2>
+<p>The versions of the applications (user-facing API, worker-facing API, job fetcher) are managed using <code>poetry</code>:</p>
+<ul>
+<li>To bump the version in <code>pyproject.toml</code>, run <code>poetry version major|minor|patch</code>.</li>
+<li>When a commit is merged and the version in <code>pyproject.toml</code> was changed:<ul>
+<li>A docker image is published to AWS ECR (public);</li>
+<li>A github release is created.</li>
+</ul>
+</li>
+<li>Alternatively, one can manually run the <code>publish-version</code> GH action for a docker build that can be manually deployed/tested.</li>
+</ul>
+<p>Deployment is done manually (both for dev and for prod) via the AWS_Infrastructure repository using the Python AWS CDK.
+Two <code>yaml</code> files (<code>config_prod.yaml</code> and <code>config_dev.yaml</code>) configure the two stacks.
+In the config, the version of the APIs and job fetcher are set (so that they can be different for <code>prod</code> and <code>dev</code>).
+To test a new version of the API on dev, one does not necessarily need to run the cloud formation tools;
+instead, they can simply update the docker image setting of the corresponding AppRunner Service on the AWS console.</p>
+<p>Updating the JobFetcher version for workers is the task of the workers themselves.</p></div>
             </div>
         </div>
 

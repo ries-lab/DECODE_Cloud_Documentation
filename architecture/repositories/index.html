@@ -173,6 +173,7 @@ Currently, it supports:</p>
 <li><strong>We typically store the Docker images of the supported applications in an AWS ECR repository</strong> (outside of the CDK stack).
   The AWS infrastructure repository contains a <a href="https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/push_local_dockerimage.py">script to push local Docker images to a public ECR repository</a>.
   Additionally, we provide scripts to <a href="https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/link_custom_domain.py">link the APIs deployed on AWS to custom domains</a> and <a href="https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/link_email_sender.py">setup the email sender for the user-facing API to send notifications to users</a>.</li>
+<li><strong>The AWS infrastructure repository deploys the APIs and Cloud Worker using their docker images published on ECR</strong>.</li>
 </ul>
 <hr /></div>
             </div>
