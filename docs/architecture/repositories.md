@@ -44,5 +44,6 @@ The repositories are intertwined in the manners detailed below:
 * **We typically store the Docker images of the supported applications in an AWS ECR repository** (outside of the CDK stack).
   The AWS infrastructure repository contains a [script to push local Docker images to a public ECR repository](https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/push_local_dockerimage.py).
   Additionally, we provide scripts to [link the APIs deployed on AWS to custom domains](https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/link_custom_domain.py) and [setup the email sender for the user-facing API to send notifications to users](https://github.com/ries-lab/DECODE_AWS_Infrastructure/blob/main/scripts/link_email_sender.py).
+* **The AWS infrastructure repository deploys the APIs and Cloud Worker using their docker images published on ECR**.
 
 ---
