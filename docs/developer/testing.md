@@ -29,82 +29,63 @@ We store credentials for them in GH's organization secrets, so that they are com
 However, those tests mostly needed to be ran once manually with a role with more permissions, since we do not want to give GH actions the permission to e.g. create RDS instances (this is also mentioned in the repositories affected).
 Currently, the permissions given to the GH runner testing user are (might not be up-to-date):
 ```
-// DecodeCloudTestsEC2Ingress
 {
     "Version": "2012-10-17",
+    // DecodeCloudTestsEC2Ingress
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "EC2",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:AuthorizeSecurityGroupIngress"
             ],
             "Resource": "arn:aws:ec2:eu-central-1:<aws-account-id>:security-group/<sg-id>"
-        }
-    ]
-}
-// DecodeCloudTestsRDS
-{
-    "Version": "2012-10-17",
-    "Statement": [
+        },
+        // DecodeCloudTestsRDS
         {
-            "Sid": "VisualEditor0",
+            "Sid": "RDS",
             "Effect": "Allow",
             "Action": "rds:DescribeDBInstances",
             "Resource": [
-                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtests",
-                "arn:aws:rds:*:<aws-account-id>:db:decodecloudqueuetests",
-                "arn:aws:rds:eu-central-1:<aws-account-id>:db:decodecloudintegrationtestsuserapi"
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsuserapi",
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsworkerapi"
             ]
-        }
-    ]
-}
-// DecodeCloudTestsS3Buckets
-{
-    "Version": "2012-10-17",
-    "Statement": [
+        },
+        // DecodeCloudTestsS3Buckets
         {
-            "Sid": "VisualEditor1",
+            "Sid": "S31",
             "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": [
-                "arn:aws:s3:::decode-cloud-integration-tests",
-                "arn:aws:s3:::decode-cloud-integration-tests/*",
-                "arn:aws:s3:::decode-cloud-filesystem-tests",
-                "arn:aws:s3:::decode-cloud-filesystem-tests/*",
-                "arn:aws:s3:::decode-cloud-user-integration-tests",
-                "arn:aws:s3:::decode-cloud-user-integration-tests/*",
-                "arn:aws:s3:::decode-cloud-user-filesystem-tests",
-                "arn:aws:s3:::decode-cloud-user-filesystem-tests/*"
-            ]
-        }
-    ]
-}
-// DecodeCloudTestsSecrets
-{
-    "Version": "2012-10-17",
-    "Statement": [
+            "Action": "s3:ListAllMyBuckets",
+            "Resource": "*"
+        },
         {
-            "Sid": "VisualEditor0",
+          "Sid": "S32",
+          "Effect": "Allow",
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::decode-cloud-user-api-tests-*",
+            "arn:aws:s3:::decode-cloud-user-api-tests-*/*",
+            "arn:aws:s3:::decode-cloud-worker-api-tests-*",
+            "arn:aws:s3:::decode-cloud-worker-api-tests-*/*"
+          ]
+        },
+        // DecodeCloudTestsSecrets
+        {
+            "Sid": "SM",
             "Effect": "Allow",
-            "Action": "secretsmanager:GetSecretValue",
+            "Action": "secretsmanager:*",
             "Resource": "arn:aws:secretsmanager:eu-central-1:<aws-account-id>:secret:decode-cloud-tests-db-pwd*"
-        }
-    ]
-}
-// SQSTestingDecodeCloud
-{
-    "Version": "2012-10-17",
-    "Statement": [
+        },
+        // SQSTestingDecodeCloud
         {
-            "Sid": "VisualEditor0",
+            "Sid": "SQS1",
             "Effect": "Allow",
             "Action": "sqs:ListQueues",
             "Resource": "*"
         },
         {
-            "Sid": "VisualEditor1",
+            "Sid": "SQS2",
             "Effect": "Allow",
             "Action": "sqs:*",
             "Resource": [
