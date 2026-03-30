@@ -31,10 +31,17 @@ Currently, the permissions given to the GH runner testing user are (might not be
 ```
 {
     "Version": "2012-10-17",
-    // DecodeCloudTestsEC2Ingress
+
     "Statement": [
+        // DecodeCloudTestsEC2Ingress
         {
-            "Sid": "EC2",
+            "Sid": "EC21",
+            "Effect": "Allow",
+            "Action": "ec2:DescribeSecurityGroups",
+            "Resource": "*"
+        },
+        {
+            "Sid": "EC22",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupIngress",
@@ -46,10 +53,11 @@ Currently, the permissions given to the GH runner testing user are (might not be
         {
             "Sid": "RDS",
             "Effect": "Allow",
-            "Action": "rds:DescribeDBInstances",
+            "Action": "rds:*",
             "Resource": [
                 "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsuserapi",
-                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsworkerapi"
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsworkerapi",
+                "arn:aws:rds:*:<aws-account-id>:cluster:decodecloudintegrationtestsworkerapi"
             ]
         },
         // DecodeCloudTestsS3Buckets
@@ -60,15 +68,15 @@ Currently, the permissions given to the GH runner testing user are (might not be
             "Resource": "*"
         },
         {
-          "Sid": "S32",
-          "Effect": "Allow",
-          "Action": "s3:*",
-          "Resource": [
-            "arn:aws:s3:::decode-cloud-user-api-tests-*",
-            "arn:aws:s3:::decode-cloud-user-api-tests-*/*",
-            "arn:aws:s3:::decode-cloud-worker-api-tests-*",
-            "arn:aws:s3:::decode-cloud-worker-api-tests-*/*"
-          ]
+            "Sid": "S32",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::decode-cloud-user-api-tests-*",
+              "arn:aws:s3:::decode-cloud-user-api-tests-*/*",
+              "arn:aws:s3:::decode-cloud-worker-api-tests-*",
+              "arn:aws:s3:::decode-cloud-worker-api-tests-*/*"
+            ]
         },
         // DecodeCloudTestsSecrets
         {
