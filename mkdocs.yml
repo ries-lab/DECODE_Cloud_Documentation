@@ -4,6 +4,7 @@ nav:
   - Architecture:
     - Repositories: architecture/repositories.md
     - Job workflow: architecture/workflow.md
+    - Data handling: architecture/data.md
     - Design choices: architecture/design.md
   - Developer guide:
     - Applications: developer/applications.md

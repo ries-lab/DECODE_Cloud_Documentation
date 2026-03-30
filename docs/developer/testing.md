@@ -26,15 +26,22 @@ They are mostly required on PRs.
 
 Repository integration tests (and sometimes even unit tests) require a testing AWS account and a user with some permissions on testing S3 buckets/RDS instances.
 We store credentials for them in GH's organization secrets, so that they are common across repositories.
-However, those tests mostly needed to be ran once manually with a role with more permissions, since we do not want to give GH actions the permission to e.g. create RDS instances (this is also mentioned in the repositories affected).
+However, those tests mostly needed to be ran once manually with a role with more permissions (this is also mentioned in the repositories affected).
 Currently, the permissions given to the GH runner testing user are (might not be up-to-date):
 ```
 {
     "Version": "2012-10-17",
-    // DecodeCloudTestsEC2Ingress
+
     "Statement": [
+        // DecodeCloudTestsEC2Ingress
         {
-            "Sid": "EC2",
+            "Sid": "EC21",
+            "Effect": "Allow",
+            "Action": "ec2:DescribeSecurityGroups",
+            "Resource": "*"
+        },
+        {
+            "Sid": "EC22",
             "Effect": "Allow",
             "Action": [
                 "ec2:RevokeSecurityGroupIngress",
@@ -46,10 +53,11 @@ Currently, the permissions given to the GH runner testing user are (might not be
         {
             "Sid": "RDS",
             "Effect": "Allow",
-            "Action": "rds:DescribeDBInstances",
+            "Action": "rds:*",
             "Resource": [
                 "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsuserapi",
-                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsworkerapi"
+                "arn:aws:rds:*:<aws-account-id>:db:decodecloudintegrationtestsworkerapi",
+                "arn:aws:rds:*:<aws-account-id>:cluster:decodecloudintegrationtestsworkerapi"
             ]
         },
         // DecodeCloudTestsS3Buckets
@@ -60,15 +68,15 @@ Currently, the permissions given to the GH runner testing user are (might not be
             "Resource": "*"
         },
         {
-          "Sid": "S32",
-          "Effect": "Allow",
-          "Action": "s3:*",
-          "Resource": [
-            "arn:aws:s3:::decode-cloud-user-api-tests-*",
-            "arn:aws:s3:::decode-cloud-user-api-tests-*/*",
-            "arn:aws:s3:::decode-cloud-worker-api-tests-*",
-            "arn:aws:s3:::decode-cloud-worker-api-tests-*/*"
-          ]
+            "Sid": "S32",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::decode-cloud-user-api-tests-*",
+              "arn:aws:s3:::decode-cloud-user-api-tests-*/*",
+              "arn:aws:s3:::decode-cloud-worker-api-tests-*",
+              "arn:aws:s3:::decode-cloud-worker-api-tests-*/*"
+            ]
         },
         // DecodeCloudTestsSecrets
         {
@@ -149,7 +157,7 @@ To do it manually using the Swagger docs of the user-facing API:
 
 You can try pulling the job from the deployed worker-facing API using the Swagger docs as well (worker authentication similar to the user authentication -- you can get the token using the worker-facing API).
 
-##### Testing lambda functions
+##### Testing AWS lambda functions
 Use the AWS CLI.
 
 ---
